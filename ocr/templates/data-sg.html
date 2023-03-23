@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+            Data Extract
+        {% endblock %}
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+</head>
+<body>
+
+{% block content %}
+
+    {% if data %}
+{#    <p>{{ data }}</p>#}
+{#    <p>{{ server }}</p>#}
+
+    <h2>Extracted Data From Report</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Location</th>
+                <th>Serial No.</th>
+                <th>Value</th>
+                <th>Report Date</th>
+                <th>Sample Date</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for key, value in data.items %}
+            <tr>
+                <td>{{ value.location }}</td>
+                <td>{{ value.serial_no }}</td>
+                <td>{{ value.value }}</td>
+                <td>{{ value.report_date }}</td>
+                <td>{{ value.sample_date }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% endif %}
+
+    <form action="submit-sg/" method="post" >
+        {% csrf_token %}
+            {{ submit_data.as_p }}
+{#        also pass {{ data }} to view function#}
+        <input type="hidden" name="data" id="data" value="{{ data }}">
+        <input type="hidden" name="server" id="server" value="{{ server }}">
+        <input type="submit" value="Submit">
+    </form>
+
+{% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+</body>
+</html>
